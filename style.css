@@ -10,6 +10,8 @@
 
 * {
     font-family: Arial, Helvetica, sans-serif;
+    padding: 0px 20px;
+    box-sizing: border-box;
 }
 
 h1, h2, h3, h4 {
@@ -18,10 +20,6 @@ h1, h2, h3, h4 {
 
 img {
     border-radius: var(--border-radius);
-}
-
-input {
-    max-width: 300px;
 }
 
 button {
@@ -68,7 +66,7 @@ input[type="submit"]:hover {
     flex-wrap: wrap;
 }
 
-#album {
+#usuarios {
     margin-top: 16px;
     border: 1px solid var(--border-color);
     padding: var(--padding);
@@ -131,4 +129,42 @@ input[type="submit"]:hover {
     min-width: 350px;
     max-width: 400px;
     padding: 10px;
+}
+
+#h3Formulario {
+    margin-top: 30px;
+}
+
+#myForm {
+    display: flex;
+    width: 100%;
+    margin-left: -60px;
+    margin-bottom: 40px;
+}
+
+#myForm label {
+    display: inline-block;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-right: -5px;
+    font-size: small;
+    white-space: nowrap
+}
+
+#myForm input {
+    display: flex;
+    min-width: 120px;
+    height: 30px;
+}
+
+#myForm textarea {
+    display: flex;
+    min-width: 250px;
+    height: 30px;
+}
+
+#create {
+    margin-left: 50px;
+    max-height: 35px;
 }

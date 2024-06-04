@@ -1,32 +1,50 @@
-let firebaseConfig = { //objeto de configuración de Firebase
-};
+const firebaseConfig = {
+    apiKey: "AIzaSyAuLH-B5suV6RhxfnuTiEGwZkXW4aGSVz8",
+    authDomain: "fir-demo-e0698.firebaseapp.com",
+    projectId: "fir-demo-e0698",
+    storageBucket: "fir-demo-e0698.appspot.com",
+    messagingSenderId: "596752096583",
+    appId: "1:596752096583:web:46008be2c6fcbef2508062"
+  }
 
 firebase.initializeApp(firebaseConfig);// Inicializaar app Firebase
 
 const db = firebase.firestore();// db representa mi BBDD //inicia Firestore
 
+//captura myForm
+const myForm = document.getElementById("myForm")
+
 //Función auxiliar para pintar una foto en el album
-const printPhoto = (title, url, docId) => {
+const printPhoto = (nombre, email, mensaje, urlImg, docId) => {
+
   let card = document.createElement('article');
   card.setAttribute('class', 'card');
+  
+  let pName = document.createElement('p');
+  pName.innerHTML = nombre;
+
+  let pEmail = document.createElement('p');
+  pEmail.innerHTML = email;
+
+  let pMensaje = document.createElement('p');
+  pMensaje.innerHTML = mensaje;
+
   let picture = document.createElement('img');
-  picture.setAttribute('src', url);
-  picture.setAttribute('style', 'max-width:250px');
-  let caption = document.createElement('p');
-  caption.innerHTML = title;
+  picture.setAttribute('src', urlImg);
+  picture.setAttribute('style', 'max-width:100px');
+
   let id = document.createElement('p');
   id.innerHTML = docId;
-  const album = document.getElementById('album');
-  card.appendChild(picture);
-  card.appendChild(caption);
-  card.appendChild(id);
-  album.appendChild(card);
+
+  const usuarios = document.getElementById('usuarios');
+  card.append(pName, pEmail, pMensaje, picture, id);
+  usuarios.appendChild(card);
 };
 
 //Create
-const createPicture = (picture) => {
-  db.collection("album")
-    .add(picture)
+const createUsuario = (usuario) => {
+  db.collection("formulario")
+    .add(usuario)
     .then((docRef) => {
       console.log("Document written with ID: ", docRef.id)
       readAll();
@@ -37,14 +55,14 @@ const createPicture = (picture) => {
 //Read all
 const readAll = () => {
   // Limpia el album para mostrar el resultado
-  cleanAlbum();
+  cleanUsuarios();
 
   //Petición a Firestore para leer todos los documentos de la colección album
-  db.collection("album")
+  db.collection("formulario")
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        printPhoto(doc.data().title, doc.data().url, doc.id)
+        printPhoto(doc.data().nombre, doc.data().email, doc.data().mensaje, doc.data().urlImg, doc.id)
       });
 
     })
@@ -54,10 +72,10 @@ const readAll = () => {
 //Delete
 const deletePicture = () => {
   const id = prompt('Introduce el ID a borrar');
-  db.collection('album').doc(id).delete().then(() => {
+  db.collection('formulario').doc(id).delete().then(() => {
     alert(`Documento ${id} ha sido borrado`);
     //Clean
-    document.getElementById('album').innerHTML = "";
+    document.getElementById('usuarios').innerHTML = "";
     //Read all again
     readAll();
   })
@@ -65,8 +83,8 @@ const deletePicture = () => {
 };
 
 //Clean 
-const cleanAlbum = () => {
-  document.getElementById('album').innerHTML = "";
+const cleanUsuarios = () => {
+  document.getElementById('usuarios').innerHTML = "";
 };
 
 //Show on page load
@@ -75,16 +93,22 @@ const cleanAlbum = () => {
 //**********EVENTS**********
 
 //Create
-document.getElementById("create").addEventListener("click", () => {
-  const title = prompt("Introduce el título de tu foto");
-  const url = prompt("Introduce la url de tu foto");
-  if (!title || !url) {
+myForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const nombre = myForm.nombre.value;
+  const email = myForm.email.value;
+  const mensaje = myForm.mensaje.value;
+  const urlImg = myForm.urlImg.value;
+  console.log(nombre, email, mensaje, urlImg)
+  if (!nombre || !email || !mensaje || !urlImg) {
     alert("Hay un campo vacio. No se ha salvado");
     return
   }
-  createPicture({
-    title,
-    url,
+  createUsuario({
+    nombre,
+    email,
+    mensaje,
+    urlImg,
   });
 });
 
@@ -106,17 +130,8 @@ document.getElementById('delete').addEventListener('click', () => {
 
 //Clean
 document.getElementById('clean').addEventListener('click', () => {
-  cleanAlbum();
+  cleanUsuarios();
 });
-
-//********FIRESTORE USERS COLLECTION******
-
-const createUser = (user) => {
-  db.collection("users")
-    .add(user)
-    .then((docRef) => console.log("Document written with ID: ", docRef.id))
-    .catch((error) => console.error("Error adding document: ", error));
-};
 
 /* const readAllUsers = (born) => {
   db.collection("users")
@@ -132,15 +147,15 @@ const createUser = (user) => {
 // Read ONE
 function readOne(id) {
   // Limpia el album para mostrar el resultado
-  cleanAlbum();
+  cleanUsuarios();
 
   //Petición a Firestore para leer un documento de la colección album 
-  var docRef = db.collection("album").doc(id);
+  var docRef = db.collection("formulario").doc(id);
 
   docRef.get().then((doc) => {
     if (doc.exists) {
       console.log("Document data:", doc.data());
-      printPhoto(doc.data().title, doc.data().url, doc.id);
+      printPhoto(doc.data().nombre, doc.data().email, doc.data().mensaje, doc.data().urlImg, doc.id)
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");

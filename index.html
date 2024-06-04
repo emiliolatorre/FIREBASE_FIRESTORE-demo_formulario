@@ -16,18 +16,33 @@
 
     <main>
 
-        <h2>Mi album de fotos - Firestore</h2>
+        <h2>Mis Mensajes de Usuarios - Firestore</h2>
 
         <section id="button-set">
-            <button id="create">Create</button>
+            <!-- <button id="create">Create</button> -->
             <button id="read-all">Read All</button>
             <button id="read-one">Find One by Id</button>
             <button id="delete">Delete</button>
             <button id="clean">Clean</button>
         </section>
-        <h3>Album</h3>
-        <section id="album">
+        <h3>Usuarios</h3>
+        <section id="usuarios">
 
+        </section>
+
+        <h3 id="h3Formulario">Crear Usuario</h3>
+        <section>
+            <form id="myForm">
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email">
+                <label for="mensaje">Mensaje</label>
+                <textarea name="mensaje" id="mensaje">Escribe aquí tu mensaje</textarea>
+                <label for="urlImg" id="urlImgLabel">Url Imagen</label>
+                <input type="text" name="urlImg" id="urlImg">
+                <button id="create" type="submit">Create</button>
+            </form>
         </section>
 
         <!-- <section>
